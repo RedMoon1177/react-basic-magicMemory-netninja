@@ -20,7 +20,6 @@ function App() {
 
   // shuffle cards
   const shuffleCards = () => {
-    setDisabled(true);
     const shuffledCards = [...cardImages, ...cardImages]
       .sort(() => Math.random() - 0.5)
       .map((card) => ({ ...card, id: Math.random() }));
@@ -37,8 +36,9 @@ function App() {
   // compare 2 selected choices
   useEffect(() => {
     if (choiceOne && choiceTwo) {
+      setDisabled(true);
+
       if (choiceOne.src === choiceTwo.src) {
-        // console.log("those cards match.");
         setCards((prevCards) => {
           return prevCards.map((card) => {
             if (card.src === choiceOne.src) {
@@ -53,7 +53,6 @@ function App() {
         });
         resetTurn();
       } else {
-        // console.log("those cards do not match.");
         setTimeout(() => resetTurn(), 1000);
       }
     }
@@ -71,7 +70,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Robot Match</h1>
+      <h1>Magic Match</h1>
       <button onClick={shuffleCards}>New Game</button>
 
       <div className="card-grid">
@@ -80,6 +79,7 @@ function App() {
             card={card}
             handleChoice={handleChoice}
             flipped={card === choiceOne || card === choiceTwo || card.matched}
+            disabled={disabled}
             key={card.id}
           />
         ))}
